@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   say-hello:
     docker:
-      - image: cimg/python:3.8  # Example Ubuntu-based image
+      - image: alpine:latest
     steps:
       - run:
           name: "Say hello"
@@ -12,12 +12,12 @@ jobs:
   sonarqube:
     working_directory: ~/build
     docker:
-      - image: sonarsource/sonar-scanner-cli  # Make sure this supports your environment
+      - image: alpine:latest
     resource_class: small
     steps:
-      - run: apt update
-      - run: apt upgrade -y
-      - run: apt install -y openssh git curl
+      - run: apk update
+      - run: apk upgrade
+      - run: apk --no-cache add --update openssh git curl
       - checkout
       - run: find .
       - attach_workspace:
