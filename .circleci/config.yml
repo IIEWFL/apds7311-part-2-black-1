@@ -2,55 +2,68 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
+# Define jobs to be invoked later in a workflow.
 # See: https://circleci.com/docs/jobs-steps/#jobs-overview & https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   say-hello:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/executor-intro/ & https://circleci.com/docs/configuration-reference/#executor-job
+    # Specify the execution environment.
     docker:
-      # Specify the version you desire here
-      # See: https://circleci.com/developer/images/image/cimg/base
       - image: cimg/base:current
 
-    # Add steps to the job
-    # See: https://circleci.com/docs/jobs-steps/#steps-overview & https://circleci.com/docs/configuration-reference/#steps
+    # Add steps to the job.
     steps:
-      # Checkout the code as the first step.
       - checkout
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
+      # Optionally, store artifacts or workspace if needed by other jobs.
+      # - persist_to_workspace:
+      #     root: .
+      #     paths:
+      #       - some/path
 
   sonarqube:
-    working_directory: ~/build
+    # Use a Docker image compatible with Debian-based package managers.
     docker:
-      - image: sonarsource/sonar-scanner-cli
+      - image: sonarsource/sonar-scanner-cli:latest
+    working_directory: ~/build
     resource_class: small
     steps:
-      - run: apk upgrade
-      - run: apk --no-cache add --update openssh git curl
       - checkout
-      - run: find .
-      - attach_workspace:
-          at: ~/workspace
-      - run: |
-          SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
-          echo "Sonar branch value is: " $SONAR_BRANCH
-          echo "Sonar org value is : "$SONAR_ORG
-          sonar-scanner \
-          -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
-          -Dsonar.organization="$SONAR_ORG" \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.exclusions="**/android/**,**/ios/**" \
-          -Dsonar.login="$SONAR_TOKEN" \
-          -Dsonar.branch.name="$SONAR_BRANCH" \
-          -Dsonar.sources="."
+      # Update and install necessary packages using apt-get instead of apk.
+      - run:
+          name: "Update and Install Dependencies"
+          command: |
+            sudo apt-get update
+            sudo apt-get upgrade -y
+            sudo apt-get install -y openssh-client git curl
+      - run:
+          name: "List Files for Debugging"
+          command: find .
+      # Remove attach_workspace unless you have a corresponding persist_to_workspace in another job.
+      # - attach_workspace:
+      #     at: ~/workspace
+      - run:
+          name: "Run SonarQube Scanner"
+          command: |
+            SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
+            echo "Sonar branch value is: $SONAR_BRANCH"
+            echo "Sonar org value is: $SONAR_ORG"
+            sonar-scanner \
+              -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
+              -Dsonar.organization="$SONAR_ORG" \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.exclusions="**/android/**,**/ios/**" \
+              -Dsonar.login="$SONAR_TOKEN" \
+              -Dsonar.branch.name="$SONAR_BRANCH" \
+              -Dsonar.sources="."
 
-# Orchestrate jobs using workflows
+# Orchestrate jobs using workflows.
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
       - say-hello
-      - sonarqube
+      - sonarqube:
+          requires:
+            - say-hello  # Ensures sonarqube runs after say-hello
