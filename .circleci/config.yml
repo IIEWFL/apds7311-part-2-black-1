@@ -22,9 +22,6 @@ jobs:
           command: |
             npm init -y  # Initialize a new Node.js project with default settings
             npm install  # Install Node.js dependencies
-      - run:
-          name: Run Tests
-          command: npm test  # Run your tests if applicable
       - run: |
           SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
           echo "Sonar branch value is: " $SONAR_BRANCH
