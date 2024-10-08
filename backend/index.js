@@ -7,8 +7,17 @@ import connectToMongo from "./dbconn/dbconn.js"
 //using validations imports 
 import helmet from "helmet"
 import morgan from "morgan"
+import cors from 'cors'
+import https from 'https'
+import fs from 'fs'
 
 //middleware
+app.use(cors(
+    {
+        origin: 'http://localhost:4200',  // The URL of your Angular frontend
+        credentials: true,
+    }
+))
 app.use(express.json())
 app.use(helmet()) // extra layer of security
 app.use(morgan('combined')) // log http request on console
@@ -19,10 +28,18 @@ connectToMongo()
 //routes
 app.use(routes)
 
-//listering ports - running on HTTP
-//must be HTTPS - cert and key needed!!
+
+//listening ports - running on HTTPS
 const PORT = process.env.PORT || 5000
-app.listen(PORT, () => {
+//SSL certificate & key
+const options = {
+    cert: fs.readFileSync('key/cert.pem'),
+    key: fs.readFileSync('key/cert.key')
+}
+https.createServer(options, app).listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
-    
 })
+//listening ports - running on HTTP
+// app.listen(PORT, () => {
+//     console.log(`Server running on ${PORT}`);
+// })

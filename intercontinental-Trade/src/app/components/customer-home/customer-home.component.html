@@ -1,0 +1,24 @@
+<div class="flex column full-width purple-bg border-box">
+    <div class=" flex full-width relative">
+        <div class="full-width">
+            <router-outlet></router-outlet>
+        </div>
+        <mat-toolbar class="bottom-nav space-between-center flex fixed">
+            <button mat-icon-button routerLink="/customer-home/wallet" routerLinkActive="active-link" matTooltip="Wallet">
+                <mat-icon>account_balance_wallet</mat-icon>
+            </button>
+            <button mat-icon-button routerLink="/customer-home/statistics" routerLinkActive="active-link" matTooltip="Statistics">
+                <mat-icon>signal_cellular_alt</mat-icon>
+            </button>
+            <button mat-icon-button routerLink="/customer-home/payments" routerLinkActive="active-link" matTooltip="Payments">
+                <mat-icon>payments</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Notifications" routerLink="/customer-home/notifications" routerLinkActive="active-link">
+                <mat-icon>notifications</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Settings" routerLink="/customer-home/settings" routerLinkActive="active-link">
+                <mat-icon>settings</mat-icon>
+            </button>
+        </mat-toolbar>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="flex column full-width purple-bg white center-center padding-10px border-box">
+    <div class="flex  column">
+        <div class="row center flex gap-1em">
+            <span class="material-symbols-outlined pointer it" (click)="goBack()" >
+                chevron_left
+            </span>
+            <p>Sign Up</p>
+        </div>
+        <hr class="white full-width">
+        <div class="center-center flex">
+            <img src="../../../assets/logo.png" alt="logo" width="150px">
+        </div>
+        <div class="text-center"><h3>Intercontinental Trade</h3></div>
+        <form [formGroup]="registerForm" >
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Full name</mat-label>
+                <input matInput placeholder="Joe Doe" required formControlName="fullName">
+                <mat-error *ngIf="registerForm.controls['fullName'].hasError('required')">
+                    Full Name is <strong>required</strong>
+                  </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>ID Number</mat-label>
+                <input matInput placeholder="9901015020082" required formControlName="idNumber" oninput="this.value = this.value.replace(/[^\d]/g, '')" maxlength="13">
+                <mat-error *ngIf="registerForm.controls['idNumber'].hasError('required')">
+                    ID is <strong>required</strong>
+                  </mat-error>
+                  <mat-error *ngIf="registerForm.get('idNumber')?.hasError('minlength')">
+                    ID Number must be 13 digits long!!
+                  </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Account Number</mat-label>
+                <input matInput placeholder="6291639173" required formControlName="accountNumber" oninput="this.value = this.value.replace(/[^\d]/g, '')" maxlength="11">
+                <mat-error *ngIf="registerForm.controls['accountNumber'].hasError('required')">
+                    Account Number is <strong>required</strong>
+                  </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Password</mat-label>
+                <input [type] = "hidepassword ? 'password' : 'text'" matInput placeholder="*****" required formControlName="password">
+                <mat-icon matSuffix (click)="show()">{{hidepassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+                <mat-error *ngIf="registerForm.controls['password'].hasError('required')">
+                    Password is <strong>required</strong>
+                  </mat-error>
+              </mat-form-field>
+        </form>
+        <div class="center-center flex">
+            <button mat-raised-button class="orange-bg white half-width" [disabled]="registerForm.invalid" (click)="register()">Register</button>
+        </div>
+        <div class="center-center flex">
+            <p class="it pointer" (click)="goToSignIn()">Sign In</p>
+        </div>
+    </div>
+</div>

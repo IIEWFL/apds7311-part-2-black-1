@@ -1,0 +1,17 @@
+<div class="flex column full-width center-center border-box">
+    <div class="space-between-center flex full-width con">
+        <div class="round">
+            <img src="../../../assets/profile.png" width="80px" >
+        </div>
+        <h3>My wallet</h3>
+        <div class="margin-right-10px pointer" (click)="addAmount()">
+            <mat-icon matTooltip="Add Balance">add_circle</mat-icon>
+        </div>
+    </div><br><br>
+    <div class="card">
+        <mat-card class="full-width padding-10px">
+            <h3 class="no-margin">Total Balance</h3>
+            <h2 class="no-margin">R{{amount}}</h2>
+        </mat-card>
+    </div>
+</div>

@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 
 const transctions = mongoose.Schema({
-    amount: {type: Number, required: true},
+    amount: {type: String, required: true},
     status: {type: String, enum: ["Pending", "Success"], default: "Pending"},
-    currency: { type: String, enum: ["Rand", "Dollor", "Yen", "Pound"], default: "Rand"},
-    provider: { type: String,enum: ["SWIFT", "Other"], default: "SWIFT"},
-    accountNumber: {type: Number, required: true},
-    code: {type: Number, required: true},
+    currency: { type: String, enum: ["Rand", "Dollar", "Yen", "Pound"], default: "Rand"},
+    provider: { type: String, enum: ["SWIFT", "Other"], default: "SWIFT"},
+    accountNumber: {type: String, required: true, match: /^[0-9]+$/},
+    code: {type: String, required: true, match: /^[0-9]+$/,},
+    idNumber: {type: String},
 
 })
 

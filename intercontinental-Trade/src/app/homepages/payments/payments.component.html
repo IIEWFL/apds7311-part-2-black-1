@@ -1,0 +1,22 @@
+<div class="flex column full-width border-box">
+    <div class="center-center flex full-width con">
+        <h3>Payments</h3>
+    </div>
+    <div class="flex gap-05em white center padding-5px orange pointer" (click)="openPayments()">
+        <span class="material-symbols-outlined">
+            add_circle
+        </span>
+        <p>Make a Payment</p>
+    </div>
+    <h3 class="white margin-left-10px">History</h3>
+    <div class="padding-10px" *ngFor="let item of array">
+        <mat-card class="padding-10px border-box">
+            <h4 class="text-center no-margin">Transaction</h4>
+            <p class="no-margin"><strong>Currency:</strong> {{item.currency}}</p>
+            <p class="no-margin"><strong>SWIFT Account:</strong> {{item.accountNumber}}</p>
+            <p class="no-margin"><strong>SWIFT Code:</strong> {{item.code}}</p>
+            <p class="no-margin"><strong>Amount:</strong> {{item.amount}}</p>
+            <p class="no-margin"><strong>Status:</strong> {{item.status}}</p>
+        </mat-card>
+    </div><br><br><br>
+</div>

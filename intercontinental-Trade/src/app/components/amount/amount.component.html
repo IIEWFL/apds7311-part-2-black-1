@@ -1,0 +1,16 @@
+<div class="flex column full-width center-center border-box padding-10px">
+    <h4>Enter Your Balance Amount</h4>
+    <form [formGroup]="amountForm">
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Balance Amount</mat-label>
+            <input matInput required formControlName="amount" oninput="this.value = this.value.replace(/[^\d]/g, '')">
+            <mat-error *ngIf="amountForm.controls['amount'].hasError('required')">
+                Amount is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+    </form>
+    <div class="center-center row gap-1em flex">
+        <button mat-raised-button color="warn" class="white half-width" (click)="cancel()">Cancel</button>
+        <button mat-raised-button color="primary" class="white half-width" [disabled]="amountForm.invalid" (click)="addAmount()">Enter</button>
+    </div>
+</div>

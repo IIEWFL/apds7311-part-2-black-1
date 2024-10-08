@@ -1,0 +1,48 @@
+<div class="flex column full-width center-center border-box padding-10px">
+    <h4>Make Payment</h4>
+    <form [formGroup]="paymentForm">
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Select Currency</mat-label>
+            <mat-select required formControlName="currency">
+                <mat-option value="Rand">Rand</mat-option>
+                <mat-option value="Dollar">Dollar</mat-option>
+                <mat-option value="Yen">Yen</mat-option>
+                <mat-option value="Pound">Pound</mat-option>
+              </mat-select>
+            <mat-error *ngIf="paymentForm.controls['currency'].hasError('required')">
+                Currency is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>SWIFT Account Number</mat-label>
+            <input matInput required formControlName="accountNumber" oninput="this.value = this.value.replace(/[^\d]/g, '')" maxlength="11">
+            <mat-error *ngIf="paymentForm.controls['accountNumber'].hasError('required')">
+                SWIFT Account Number is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="paymentForm.controls['accountNumber'].hasError('minlength')">
+                SWIFT Account Number must be 11 digits long!!
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>SWIFT Code</mat-label>
+            <input matInput required formControlName="code" maxlength="11">
+            <mat-error *ngIf="paymentForm.controls['code'].hasError('required')">
+                SWIFT Code is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="paymentForm.controls['code'].hasError('minlength')">
+                SWIFT Code must be 11 characters long!!
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Amount</mat-label>
+            <input matInput required formControlName="amount" oninput="this.value = this.value.replace(/[^\d]/g, '')">
+            <mat-error *ngIf="paymentForm.controls['amount'].hasError('required')">
+                Amount is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+    </form>
+    <div class="center-center row gap-1em flex">
+        <button mat-raised-button color="warn" class="white half-width" (click)="cancel()">Cancel</button>
+        <button mat-raised-button color="primary" class="white half-width" [disabled]="paymentForm.invalid" (click)="submit()">Submit</button>
+    </div>
+</div>

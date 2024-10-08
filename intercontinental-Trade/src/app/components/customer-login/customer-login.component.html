@@ -1,0 +1,47 @@
+<div class="flex column full-width full-height purple-bg white center-center padding-10px border-box">
+    <div class="flex  column">
+        <div class="row center flex gap-1em">
+            <span class="material-symbols-outlined pointer it" (click)="goBack()" >
+                chevron_left
+            </span>
+            <p>Sign In</p>
+        </div>
+        <hr class="white full-width">
+        <div class="center-center flex">
+            <img src="../../../assets/logo.png" alt="logo" width="150px">
+        </div>
+        <div class="text-center"><h3>Intercontinental Trade</h3></div>
+        <form [formGroup]="loginForm" >
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Username</mat-label>
+                <input matInput placeholder="John Doe" required formControlName="username">
+                <mat-error *ngIf="loginForm.controls['username'].hasError('required')">
+                    Username is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="loginForm.controls['username'].hasError('minlength')">
+                    Username must be your full name e.g. Joe Doe
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Account Number</mat-label>
+                <input matInput placeholder="6291639173" required formControlName="accountNumber" oninput="this.value = this.value.replace(/[^\d]/g, '')" maxlength="11">
+                <mat-error *ngIf="loginForm.controls['accountNumber'].hasError('required')">
+                    Account Number is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Password</mat-label>
+                <input matInput placeholder="*****" required formControlName="password">
+                <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+                    Password is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+        </form>
+        <div class="center-center flex">
+            <button mat-raised-button class="orange-bg white half-width" (click)="login()" [disabled]="loginForm.invalid">Login</button>
+        </div>
+        <div class="center-center flex">
+            <p class="it pointer" (click)="goToSignUp()">Sign Up</p>
+        </div>
+    </div>
+</div>
