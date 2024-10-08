@@ -5,6 +5,7 @@ jobs:
     docker:
       - image: circleci/node:16  # Use a Node.js Docker image
     steps:
+      - checkout  # Check out the source code
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
@@ -15,10 +16,12 @@ jobs:
       - image: circleci/node:16  # Use a Node.js Docker image
     resource_class: small
     steps:
-      - checkout  # Check out the source code
+      - checkout  # Make sure to check out the code
       - run:
-          name: Install Dependencies
-          command: npm install  # Install Node.js dependencies
+          name: Initialize npm and Install Dependencies
+          command: |
+            npm init -y  # Initialize a new Node.js project with default settings
+            npm install  # Install Node.js dependencies
       - run:
           name: Run Tests
           command: npm test  # Run your tests if applicable
