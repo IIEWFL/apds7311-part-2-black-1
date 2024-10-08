@@ -1,13 +1,9 @@
-
 version: 2.1
 
 jobs:
   say-hello:
-    
     docker:
-      
-      - image: cimg/base:current
-
+      - image: cimg/python:3.8  # Example Ubuntu-based image
     steps:
       - run:
           name: "Say hello"
@@ -16,18 +12,18 @@ jobs:
   sonarqube:
     working_directory: ~/build
     docker:
-      - image: sonarsource/sonar-scanner-cli
+      - image: sonarsource/sonar-scanner-cli  # Make sure this supports your environment
     resource_class: small
     steps:
-      - run: apk update
-      - run: apk upgrade
-      - run: apk --no-cache add --update openssh git curl
+      - run: apt update
+      - run: apt upgrade -y
+      - run: apt install -y openssh git curl
       - checkout
       - run: find .
       - attach_workspace:
           at: ~/workspace
       - run: |
-          SONAR_BRANCH="${CIRCLE_BRANCH:-main}"
+          SONAR_BRANCH="${CIRCLE_BRANCH:-master}"
           echo "Sonar branch value is: " $SONAR_BRANCH
           echo "Sonar org value is : "$SONAR_ORG
           sonar-scanner \
@@ -39,8 +35,6 @@ jobs:
           -Dsonar.branch.name="$SONAR_BRANCH" \
           -Dsonar.sources="."
 
-# Orchestrate jobs using workflows
-# See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
